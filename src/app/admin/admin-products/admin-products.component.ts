@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product.service';
@@ -12,7 +12,9 @@ import { ProductService } from 'src/app/services/product.service';
 export class AdminProductsComponent implements OnInit, OnDestroy {
   products: Product[];
   productSubsc: Subscription;
-  filteredProducts: Product[];
+  //filteredProducts: Product[];
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<void | any>();
 
   constructor(private productService: ProductService) {
     this.productSubsc = this.productService
@@ -20,14 +22,27 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
       .snapshotChanges()
       .pipe(
         map((changes) =>
-          changes.map((c) => ({ key: c.payload.key, ...c.payload.val() }))
+          changes.map((c) => {
+            this.dtTrigger.next(null);
+            return { key: c.payload.key, ...c.payload.val() };
+          })
         )
       )
-      .subscribe((data) => (this.filteredProducts = this.products = data));
+      ///.subscribe((data) => (this.filteredProducts = this.products = data));
+      .subscribe((data) => {
+        console.log(data);
+        this.products = data;
+      });
   }
 
-  ngOnInit(): void {}
-
+  ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 5,
+      retrieve: true,
+    };
+  }
+  /*
   filter(query: string) {
     this.filteredProducts = query
       ? this.products.filter((p) =>
@@ -35,8 +50,9 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
         )
       : this.products;
   }
-
+*/
   ngOnDestroy(): void {
     this.productSubsc.unsubscribe();
+    this.dtTrigger.unsubscribe();
   }
 }

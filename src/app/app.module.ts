@@ -8,6 +8,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NarikCustomValidatorsModule } from '@narik/custom-validators';
+import { DataTablesModule } from 'angular-datatables';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
@@ -47,6 +48,7 @@ import { AdminProductsComponent } from './admin/admin-products/admin-products.co
     AngularFireAuthModule,
     FormsModule,
     NarikCustomValidatorsModule,
+    DataTablesModule
   ],
   providers: [],
   bootstrap: [AppComponent],
