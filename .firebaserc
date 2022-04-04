@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "oshop-f812f": {
+      "hosting": {
+        "shopping": [
+          "oshop-f812f"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "oshop-f812f"
+  }
+}
