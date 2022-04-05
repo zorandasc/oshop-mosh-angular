@@ -85,19 +85,7 @@
     </form>
   </div>
   <div class="col-md-6 d-flex aligns-items-center justify-content-center">
-    <div
-      *ngIf="product.title"
-      class="card text-white bg-dark mb-3"
-      style="width: 18rem"
-    >
-      <img [src]="product.imageUrl" class="card-img-top" />
-      <div class="card-body">
-        <h4 class="card-title">{{ product.title }}</h4>
-        <p class="card-text">
-          {{ product.price | currency: "USD":"symbol" }}
-        </p>
-      </div>
-    </div>
+    <app-product-card [product]="product" [show-actions]="false"></app-product-card>
     <div *ngIf="!product.title" class="border border-white" style="width: 18rem"></div>
   </div>
 </div>

@@ -4,9 +4,5 @@
 body {
   padding-top: 80px;
   background-color: #333;
-  color:antiquewhite;
-}
-
-.active {
-  color: lightgreen !important;
+  color: antiquewhite;
 }

@@ -1,5 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { map, Subscription } from 'rxjs';
+import { Component, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { map, Subscription, switchMap } from 'rxjs';
+
 import { Product } from '../models/product';
 import { ProductService } from '../services/product.service';
 
@@ -9,10 +11,13 @@ import { ProductService } from '../services/product.service';
   styleUrls: ['./products.component.css'],
 })
 export class ProductsComponent implements OnDestroy {
-  products: Product[];
+  products: Product[] = [];
   productSubsc: Subscription;
+  filteredProducts: Product[] = [];
+  category: string;
 
-  constructor(private productService: ProductService) {
+  constructor(route: ActivatedRoute, private productService: ProductService) {
+    //get all products
     this.productSubsc = this.productService
       .getAll()
       .snapshotChanges()
@@ -23,11 +28,24 @@ export class ProductsComponent implements OnDestroy {
           })
         )
       )
-      .subscribe((data) => (this.products = data));
+      //da nebi imali subscribe unutar subcsribe
+      //koristiom switchMap, switch from one observble to another
+      .pipe(
+        switchMap((data) => {
+          this.products = data;
+          return route.queryParamMap; //return Observable<ParamMap>
+        })
+      )
+      .subscribe((params) => {
+        this.category = params.get('category');
+
+        this.filteredProducts = this.category
+          ? this.products.filter((p) => p.category === this.category)
+          : this.products;
+      });
   }
 
   ngOnDestroy(): void {
     this.productSubsc.unsubscribe();
-   
   }
 }

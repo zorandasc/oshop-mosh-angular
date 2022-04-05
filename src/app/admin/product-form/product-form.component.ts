@@ -41,7 +41,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     }
 
     this.categorySubs = this.categoryService
-      .getCategories()
+      .getAll()
       .snapshotChanges()
       .pipe(
         map((changes) =>
