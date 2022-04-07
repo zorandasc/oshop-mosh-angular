@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { retry, take } from 'rxjs';
+import { take } from 'rxjs';
 import { Product } from '../models/product';
+import { ShoppingCart } from '../models/shopping-cart';
 import { ShoppingCartItem } from '../models/shopping-cart-item';
 
 @Injectable({
@@ -16,8 +17,9 @@ export class ShoppingCartService {
     });
   }
 
-  private getCart(cartId: string) {
-    return this.db.object('/shopping-carts/' + cartId);
+  async getCart() {
+    let cartId = await this.getOrCreateCartId();
+    return this.db.object<ShoppingCart>('/shopping-carts/' + cartId);
   }
 
   private getItem(cartId: string, productId: string) {
@@ -26,7 +28,7 @@ export class ShoppingCartService {
     );
   }
 
-  private async getOrCreateCartId() {
+  private async getOrCreateCartId(): Promise<string> {
     let cartId = localStorage.getItem('cartId');
     if (cartId) return cartId;
 
@@ -36,28 +38,33 @@ export class ShoppingCartService {
   }
 
   async addToCart(product: Product) {
+    this.updateItemQuantity(product, 1);
+  }
+
+  async removeFromCart(product: Product) {
+    this.updateItemQuantity(product, -1);
+  }
+
+  private async updateItemQuantity(product: Product, change: number) {
     //dobavi postojeci ili kreiraj novi cartid
     let cartId = await this.getOrCreateCartId();
 
     //dobavi caritemid koji je isti kao i productid
+    //item$ je AngularFireObject<ShoppingCartItem>
     let item$ = this.getItem(cartId, product.key);
-
-    //da bi smo doboli nas objekat ShoppingCartItem
-    //moram se subscribovati na AngularFireObject<ShoppingCartItem>
-    //odnosno na Observable of AngularFireObject, which is
-    //item$.valueChanges()
     item$
-      .valueChanges()
+      .valueChanges() //Observable<AngularFireObject<ShoppingCartItem>>
       .pipe(take(1))
       .subscribe((item) => {
+        //item je ShoppingCartItem
         //ako postoji cartitemid povecaj quantity+1
         //ako ne postoji dodaj product i quantity=1
         //if (item) item$.update({ quantity: item.quantity + 1 });
-        //else item$.set({ ptoduct:product, quantity:  1 });
-        //firebase je brz pa moze all in one go i ovako
+        //else item$.set({ product: product, quantity: 1 });
+        //firebase je brz pa moze (all in one go) i ovako
         item$.update({
           product: product,
-          quantity: (item.quantity || 0) + 1,
+          quantity: (item?.quantity || 0) + change,
         });
       });
   }
