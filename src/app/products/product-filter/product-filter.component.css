@@ -1,6 +1,7 @@
 .list-group-item-dark {
   color: #d3e4e8;
   background-color: #4e5455;
+  border-bottom-color: #d3e4e8;
 }
 .list-group-item-dark.list-group-item-action.active {
   color: #d3e4e8;
@@ -9,5 +10,5 @@
 }
 
 .sticky-top {
-  top: 80px;
+  top: 100px;
 }

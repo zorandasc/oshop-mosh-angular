@@ -17,7 +17,7 @@ export class ProductService {
   }
 
   getAll(): AngularFireList<Product> {
-    return this.db.list('/products');
+    return this.db.list('/products', (ref) => ref.orderByChild('title'));
   }
 
   get(productId: string): AngularFireObject<Product> {
