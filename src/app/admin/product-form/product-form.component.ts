@@ -30,9 +30,11 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private categoryService: CategoryService,
     private productService: ProductService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
-    if (this.id) {
+    if (this.id) {//ako postoji onda smo u edit formi
       this.productService
         .get(this.id)
         .valueChanges()
@@ -40,6 +42,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         .subscribe((p) => (this.product = p));
     }
 
+    //opadajuci meni za categoriju
     this.categorySubs = this.categoryService
       .getAll()
       .snapshotChanges()
@@ -50,8 +53,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       )
       .subscribe((data) => (this.categories = data));
   }
-
-  ngOnInit(): void {}
 
   save(product: any) {
     if (this.id) {

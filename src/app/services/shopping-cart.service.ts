@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
+import {
+  AngularFireDatabase,
+  AngularFireObject,
+} from '@angular/fire/compat/database';
 import { take } from 'rxjs';
 import { Product } from '../models/product';
 import { ShoppingCart } from '../models/shopping-cart';
@@ -17,7 +20,7 @@ export class ShoppingCartService {
     });
   }
 
-  async getCart() {
+  async getCart(): Promise<AngularFireObject<ShoppingCart>> {
     let cartId = await this.getOrCreateCartId();
     return this.db.object<ShoppingCart>('/shopping-carts/' + cartId);
   }
@@ -55,8 +58,7 @@ export class ShoppingCartService {
     item$
       .valueChanges() //Observable<AngularFireObject<ShoppingCartItem>>
       .pipe(take(1))
-      .subscribe((item) => {
-        //item je ShoppingCartItem
+      .subscribe((shoppingCartItem) => {
         //ako postoji cartitemid povecaj quantity+1
         //ako ne postoji dodaj product i quantity=1
         //if (item) item$.update({ quantity: item.quantity + 1 });
@@ -64,7 +66,7 @@ export class ShoppingCartService {
         //firebase je brz pa moze (all in one go) i ovako
         item$.update({
           product: product,
-          quantity: (item?.quantity || 0) + change,
+          quantity: (shoppingCartItem?.quantity || 0) + change,
         });
       });
   }

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { map, Observable } from 'rxjs';
 import { AppUser } from '../models/app-user';
+import { ShoppingCart } from '../models/shopping-cart';
 import { AuthService } from '../services/auth.service';
-
+import { ShoppingCartService } from '../services/shopping-cart.service';
 
 @Component({
   selector: 'app-bs-navbar',
@@ -15,14 +17,33 @@ export class BsNavbarComponent implements OnInit {
   //zato u navbaru umijesto async pipe u templateu primjenjujemo
   ///subcribe na appUser$() u navbar componenti da bi dobili appusera
   appUser: AppUser;
+  cart$: Observable<ShoppingCart>;
 
-  constructor(private auth: AuthService) {
+  constructor(
+    private auth: AuthService,
+    private shoppingCartService: ShoppingCartService
+  ) {}
+
+  async ngOnInit() {
+    //posto imamo single instance of navbar in dom
+    //throug life time of our appp, nije potrebno
+    //unsubscribovati iz subscriptiona
     this.auth.appUser$.subscribe((appUser) => {
       this.appUser = appUser;
     });
-  }
 
-  ngOnInit(): void {}
+    //mapirammo ShopingCart koji dobijamo od firebase
+    //u nas frontend model representation of ShoppinCart
+    //jer nas model ima get totalItemsCount() get metodu
+    //iNACE metode u shoppingCartService vracaju Promise
+    this.cart$ = (await this.shoppingCartService.getCart())
+      .valueChanges() //konvertujemo u Observable da bi dobili item iz firebasea
+      .pipe(
+        map(
+          (fireBaseShoppingCart) => new ShoppingCart(fireBaseShoppingCart.items)
+        )
+      );
+  }
 
   logout() {
     this.auth.logout();

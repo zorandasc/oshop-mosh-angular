@@ -21,10 +21,12 @@ export class ProductsComponent implements OnInit, OnDestroy {
   cartSubsc: Subscription;
 
   constructor(
-    route: ActivatedRoute,
+    private route: ActivatedRoute,
     private productService: ProductService,
     private cartService: ShoppingCartService
-  ) {
+  ) {}
+
+  async ngOnInit() {
     //get all products
     this.productSubsc = this.productService
       .getAll()
@@ -42,7 +44,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
         switchMap((data) => {
           this.products = data;
           //route params dobijamo od router u komponentu
-          return route.queryParamMap; //return Observable<ParamMap>
+          return this.route.queryParamMap; //return Observable<ParamMap>
         })
       )
       .subscribe((params) => {
@@ -52,17 +54,19 @@ export class ProductsComponent implements OnInit, OnDestroy {
           ? this.products.filter((p) => p.category === this.category)
           : this.products;
       });
-  }
-  async ngOnInit() {
+      
     let cart$ = await this.cartService.getCart();
 
     //dobavi cart od cart observera i ubaci u svaku karticu
     //svaka kartica ce naci sebe u itemsima carta
     //preko product.key
-    cart$.valueChanges().subscribe((cart) => (this.cart = cart));
+    this.cartSubsc = cart$
+      .valueChanges()
+      .subscribe((cart) => (this.cart = cart));
   }
 
   ngOnDestroy(): void {
     this.productSubsc.unsubscribe();
+    this.cartSubsc.unsubscribe();
   }
 }
