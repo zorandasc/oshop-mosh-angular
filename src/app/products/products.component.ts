@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, Subscription, switchMap } from 'rxjs';
+import { map, Observable, Subscription, switchMap } from 'rxjs';
 
 import { Product } from '../models/product';
 import { ShoppingCart } from '../models/shopping-cart';
@@ -17,8 +17,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   productSubsc: Subscription;
   filteredProducts: Product[] = [];
   category: string;
-  cart: ShoppingCart;
-  cartSubsc: Subscription;
+  cart$: Observable<ShoppingCart>;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,19 +53,14 @@ export class ProductsComponent implements OnInit, OnDestroy {
           ? this.products.filter((p) => p.category === this.category)
           : this.products;
       });
-      
-    let cart$ = await this.cartService.getCart();
 
     //dobavi cart od cart observera i ubaci u svaku karticu
     //svaka kartica ce naci sebe u itemsima carta
     //preko product.key
-    this.cartSubsc = cart$
-      .valueChanges()
-      .subscribe((cart) => (this.cart = cart));
+    this.cart$ = await this.cartService.getCart();
   }
 
   ngOnDestroy(): void {
     this.productSubsc.unsubscribe();
-    this.cartSubsc.unsubscribe();
   }
 }

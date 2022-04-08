@@ -35,14 +35,7 @@ export class BsNavbarComponent implements OnInit {
     //mapirammo ShopingCart koji dobijamo od firebase
     //u nas frontend model representation of ShoppinCart
     //jer nas model ima get totalItemsCount() get metodu
-    //iNACE metode u shoppingCartService vracaju Promise
-    this.cart$ = (await this.shoppingCartService.getCart())
-      .valueChanges() //konvertujemo u Observable da bi dobili item iz firebasea
-      .pipe(
-        map(
-          (fireBaseShoppingCart) => new ShoppingCart(fireBaseShoppingCart.items)
-        )
-      );
+    this.cart$ = await this.shoppingCartService.getCart();
   }
 
   logout() {
