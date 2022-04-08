@@ -29,7 +29,7 @@ export class ShoppingCartService {
         map(
           (fireBaseShoppingCart) => new ShoppingCart(fireBaseShoppingCart.items)
         )
-      );;
+      );
   }
 
   private getItem(cartId: string, productId: string) {

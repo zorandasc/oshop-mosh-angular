@@ -1,7 +1,13 @@
 import { ShoppingCartItem } from './shopping-cart-item';
 
 export class ShoppingCart {
+
   constructor(public items: ShoppingCartItem[]) {}
+
+  get productIds() {
+    //dobavi kljuceve iz items objekta
+    return Object.keys(this.items);
+  }
 
   //single responsability principel
   //Shopingcart treba da zna count

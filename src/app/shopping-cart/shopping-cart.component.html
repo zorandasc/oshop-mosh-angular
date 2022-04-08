@@ -1,4 +1,23 @@
 <p>shopping-cart works!</p>
 <ng-container *ngIf="cart$ | async as cart">
-  <p>You have {{ cart.totalItemsCount }} in tour shopping cart</p>
+  <p>
+    You have
+    {{ cart.totalItemsCount }}
+    shopping cart
+  </p>
+  <table class="table table-hover table-dark table-striped">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let productId of cart.productIds">
+        <td>{{ cart.items[$any(productId)].product.title }}</td>
+        <td>{{ cart.items[$any(productId)].quantity }}</td>
+      </tr>
+    </tbody>
+  </table>
 </ng-container>
