@@ -1,3 +1,4 @@
+import { Product } from './product';
 import { ShoppingCartItem } from './shopping-cart-item';
 
 export class ShoppingCart {
@@ -7,7 +8,9 @@ export class ShoppingCart {
   //ovog tipa { [key: string]: ShoppingCartItem }
   //in shoppin-cartservice  new ShoppingCart(fireBaseShoppingCart.items)
   //i smijestamo ga u itemsMap
-  constructor(public itemsMap: { [key: string]: ShoppingCartItem }) {
+  constructor(private itemsMap: { [key: string]: ShoppingCartItem }) {
+    this.itemsMap = itemsMap || {};
+    
     for (let productId in itemsMap) {
       //mapiramo u nas lokalnu array
       let item = itemsMap[productId];
@@ -35,5 +38,11 @@ export class ShoppingCart {
       sum += this.items[productId].totalPrice;
     }
     return sum;
+  }
+
+  getQuantity(product: Product) {
+    let item = this.itemsMap[product.key];
+
+    return item ? item.quantity : 0;
   }
 }
