@@ -27,7 +27,7 @@ export class ShoppingCartService {
       .valueChanges()
       .pipe(
         map(
-          (fireBaseShoppingCart) => new ShoppingCart(fireBaseShoppingCart.items)
+          (fireBaseShoppingCart) => new ShoppingCart(fireBaseShoppingCart?.items)
         )
       );
   }

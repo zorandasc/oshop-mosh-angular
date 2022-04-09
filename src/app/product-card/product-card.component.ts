@@ -30,7 +30,7 @@ export class ProductCardComponent implements OnInit {
 
     //itemsMap je objekat oblika { [productId: string]: ShoppingCartItem }
     //ono sto dobijemo od firebasea
-    let item = this.shoppingCart.itemsMap[<any>this.product.key];
+    let item = this.shoppingCart.items[<any>this.product.key];
 
     return item ? item.quantity : 0;
   }

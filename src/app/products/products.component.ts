@@ -42,6 +42,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap((data) => {
           this.products = data;
+          console.log(this.products);
           //route params dobijamo od router u komponentu
           return this.route.queryParamMap; //return Observable<ParamMap>
         })
