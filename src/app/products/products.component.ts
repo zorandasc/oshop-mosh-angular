@@ -26,7 +26,15 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
-    //get all products
+    this.populateProducts(); //get all products
+
+    //dobavi cart od cart observera i ubaci u svaku karticu
+    //svaka kartica ce naci sebe u itemsima carta
+    //preko product.key
+    this.cart$ = await this.cartService.getCart();
+  }
+
+  private populateProducts() {
     this.productSubsc = this.productService
       .getAll()
       .snapshotChanges()
@@ -35,11 +43,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
           changes.map((c) => {
             return { key: c.payload.key, ...c.payload.val() };
           })
-        )
-      )
-      //da nebi imali subscribe unutar subcsribe
-      //koristiom switchMap, switch from one observble to another
-      .pipe(
+        ),
+        //da nebi imali subscribe unutar subcsribe
+        //koristiom switchMap, switch from one observble to another
         switchMap((data) => {
           this.products = data;
           //route params dobijamo od router u komponentu
@@ -49,15 +55,14 @@ export class ProductsComponent implements OnInit, OnDestroy {
       .subscribe((params) => {
         this.category = params.get('category');
 
-        this.filteredProducts = this.category
-          ? this.products.filter((p) => p.category === this.category)
-          : this.products;
+        this.applyFilter();
       });
+  }
 
-    //dobavi cart od cart observera i ubaci u svaku karticu
-    //svaka kartica ce naci sebe u itemsima carta
-    //preko product.key
-    this.cart$ = await this.cartService.getCart();
+  private applyFilter() {
+    this.filteredProducts = this.category
+      ? this.products.filter((p) => p.category === this.category)
+      : this.products;
   }
 
   ngOnDestroy(): void {

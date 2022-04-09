@@ -65,22 +65,26 @@ export class ShoppingCartService {
     //dobavi postojeci ili kreiraj novi cartid
     let cartId = await this.getOrCreateCartId();
 
-    //dobavi caritemid koji je isti kao i productid
+    //dobavi itemid koji je isti kao i productid
     //item$ je AngularFireObject<ShoppingCartItem>
-    let item$ = this.getItem(cartId, product.key);
-    item$
+    let item = this.getItem(cartId, product.key);
+
+    item
       .valueChanges() //Observable<AngularFireObject<ShoppingCartItem>>
       .pipe(take(1))
       .subscribe((shoppingCartItem) => {
+        let quantity = (shoppingCartItem?.quantity || 0) + change;
+        if (quantity === 0) item.remove();
         //ako postoji cartitemid povecaj quantity+1
         //ako ne postoji dodaj product i quantity=1
         //if (item) item$.update({ quantity: item.quantity + 1 });
         //else item$.set({ product: product, quantity: 1 });
         //firebase je brz pa moze (all in one go) i ovako
-        item$.update({
-          product: product,
-          quantity: (shoppingCartItem?.quantity || 0) + change,
-        });
+        else
+          item.update({
+            product: product,
+            quantity: quantity,
+          });
       });
   }
 }
