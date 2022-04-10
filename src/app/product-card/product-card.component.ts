@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Product } from '../models/product';
 import { ShoppingCart } from '../models/shopping-cart';
 import { ShoppingCartService } from '../services/shopping-cart.service';
@@ -13,6 +13,8 @@ export class ProductCardComponent implements OnInit {
   @Input('show-actions') showActions = true;
   @Input('shopping-cart') shoppingCart: ShoppingCart;
 
+  @Output() selectedItem = new EventEmitter<Product>();
+
   constructor(private cartService: ShoppingCartService) {}
 
   ngOnInit(): void {}
@@ -21,5 +23,7 @@ export class ProductCardComponent implements OnInit {
     this.cartService.addToCart(this.product);
   }
 
- 
+  imageClick() {
+    this.selectedItem.emit(this.product);
+  }
 }

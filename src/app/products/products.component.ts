@@ -6,6 +6,7 @@ import { Product } from '../models/product';
 import { ShoppingCart } from '../models/shopping-cart';
 import { ProductService } from '../services/product.service';
 import { ShoppingCartService } from '../services/shopping-cart.service';
+declare var window: any; //definise Moadal
 
 @Component({
   selector: 'app-products',
@@ -18,6 +19,14 @@ export class ProductsComponent implements OnInit, OnDestroy {
   filteredProducts: Product[] = [];
   category: string;
   cart$: Observable<ShoppingCart>;
+
+  formModal: any; //definise Moadal
+  selectedItem: Product = {
+    title: '',
+    price: 0,
+    category: '',
+    imageUrl: '',
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -32,6 +41,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
     //svaka kartica ce naci sebe u itemsima carta
     //preko product.key
     this.cart$ = await this.cartService.getCart();
+
+    //definise Moadal
+    this.formModal = new window.bootstrap.Modal(
+      document.getElementById('myModal')
+    );
   }
 
   private populateProducts() {
@@ -63,6 +77,12 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.filteredProducts = this.category
       ? this.products.filter((p) => p.category === this.category)
       : this.products;
+  }
+
+  setSelectedItem(item: Product) {
+    this.selectedItem = item;
+    this.formModal.show();
+    //this.formModal.hide();
   }
 
   ngOnDestroy(): void {

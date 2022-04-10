@@ -1,9 +1,10 @@
 <div
   *ngIf="product.title"
   class="card text-white bg-dark h-100 mx-auto shadow-lg"
-  style="width: 18rem"
 >
   <img
+    role="button"
+    (click)="imageClick()"
     *ngIf="product.imageUrl"
     [src]="product.imageUrl"
     class="card-img-top"
