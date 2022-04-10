@@ -2,7 +2,7 @@ import { Product } from './product';
 import { ShoppingCartItem } from './shopping-cart-item';
 
 export class ShoppingCart {
-  items: ShoppingCartItem[] = []; //ovaj je nas lokalni array za nase potrebe
+  public items: ShoppingCartItem[] = []; //ovaj je nas lokalni array za nase potrebe
 
   //mi od firbase dobijamo items koji je obkekat
   //ovog tipa { [key: string]: ShoppingCartItem }

@@ -4,6 +4,13 @@
     <span class="badge bg-danger">{{ cart.totalItemsCount }}</span>
 
     product in shopping cart.
+    <button
+      *ngIf="cart.items.length"
+      (click)="clearCart()"
+      class="btn btn-warning btn-sm"
+    >
+      Clear Shopping Cart
+    </button>
   </p>
 
   <table class="table table-hover table-dark table-striped align-middle">
@@ -49,5 +56,7 @@
       </tr>
     </tfoot>
   </table>
-  <button (click)="clearCart()" class="btn btn-danger btn-sm">Clear Shopping Cart</button>
+  <a *ngIf="cart.items.length" routerLink="/check-out" class="btn btn-success"
+    >Check Out</a
+  >
 </ng-container>

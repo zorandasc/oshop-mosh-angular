@@ -29,10 +29,7 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
         )
       )
       ///.subscribe((data) => (this.filteredProducts = this.products = data));
-      .subscribe((data) => {
-        console.log(data);
-        this.products = data;
-      });
+      .subscribe((data) => (this.products = data));
   }
 
   ngOnInit(): void {

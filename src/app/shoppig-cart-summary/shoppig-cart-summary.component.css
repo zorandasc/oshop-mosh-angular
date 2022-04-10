@@ -1,0 +1,11 @@
+.list-group-item-dark {
+  color: #d3e4e8;
+  background-color: #4e5455;
+  border-bottom-color: #d3e4e8;
+}
+
+.list-group-item-dark.active {
+  color: #d3e4e8;
+  background-color: #ae5f38;
+  border-color: #ae5f38;
+}

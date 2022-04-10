@@ -1,20 +1,18 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top px-4">
+<nav
+  class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top px-4 border-bottom"
+>
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/">
-      <h1><i class="fa fa-smile-o fa-1x" aria-hidden="true"></i>-Shop</h1>
+      <h1>
+        <i class="fa fa-opera text-success" aria-hidden="true"></i>rganic-<i
+          class="fa fa-scribd text-success"
+          aria-hidden="true"
+        ></i
+        >hop
+      </h1>
     </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <div class="collapse navbar-collapse mx-3" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <ng-template #anonymouseUser>
           <li class="nav-item">
@@ -37,13 +35,9 @@
           </button>
           <ul
             ngbDropdownMenu
-            class="dropdown-menu"
+            class="dropdown-menu dropdown-menu-dark"
             aria-labelledby="dropdownBasic1"
           >
-            <li>
-              <a class="dropdown-item" routerLink="/my/orders">My Orders</a>
-            </li>
-            <li><hr class="dropdown-divider" /></li>
             <ng-container *ngIf="user.isAdmin">
               <li>
                 <a class="dropdown-item" routerLink="/admin/orders"
@@ -59,6 +53,9 @@
 
             <li><hr class="dropdown-divider" /></li>
             <li>
+              <a class="dropdown-item" routerLink="/my/orders">My Orders</a>
+            </li>
+            <li>
               <a class="dropdown-item" (click)="logout()">Log Out</a>
             </li>
           </ul>
@@ -70,9 +67,10 @@
         class="btn btn-secondary position-relative"
         routerLink="/shopping-cart"
         routerLinkActive="active"
+        *ngIf="cart$ | async as cart"
       >
         <span
-          *ngIf="cart$ | async as cart"
+          *ngIf="cart.items.length"
           class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"
         >
           {{ cart.totalItemsCount }}
