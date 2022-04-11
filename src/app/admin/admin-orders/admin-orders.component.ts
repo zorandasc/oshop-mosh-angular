@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
 import { OrderService } from 'src/app/services/order.service';
 
 @Component({
@@ -14,6 +13,6 @@ export class AdminOrdersComponent implements OnInit {
   constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
-    this.orders$ = this.orderService.getOrders();
+    this.orders$ = this.orderService.getOrders()
   }
 }

@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
+import {
+  AngularFireDatabase,
+  AngularFireList,
+} from '@angular/fire/compat/database';
+import { map } from 'rxjs';
 import { Order } from '../models/order';
 import { ShoppingCartService } from './shopping-cart.service';
 
@@ -20,16 +24,38 @@ export class OrderService {
   }
 
   getOrders() {
-    return this.db.list('/orders').valueChanges();
+    return this.db
+      .list<AngularFireList<Order>>('/orders')
+      .snapshotChanges()
+      .pipe(
+        //pajpujemo da bi dobili i kljuceve svakog ordera
+        map((changes) =>
+          changes.map((c) => {
+            return { key: c.payload.key, ...c.payload.val() };
+          })
+        )
+      );
   }
 
   getOrdersByUser(userId: string) {
     return this.db
-      .list('/orders', (ref) => ref.orderByChild('user/userId').equalTo(userId))
-      .valueChanges();
+      .list<Order[]>('/orders', (ref) =>
+        ref.orderByChild('user/userId').equalTo(userId)
+      )
+      .snapshotChanges()
+      .pipe(
+        //pajpujemo da bi dobili i kljuceve svakog ordera
+        map((changes) =>
+          changes.map((c) => {
+            return { key: c.payload.key, ...c.payload.val() };
+          })
+        )
+      );
   }
 
   get(orderId: string) {
-    return this.db.object('/orders/' + orderId);
+    return this.db
+      .object<Order>('/orders/' + orderId)
+      .valueChanges();
   }
 }
