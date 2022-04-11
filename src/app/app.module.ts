@@ -28,6 +28,7 @@ import { ProductCardComponent } from './product-card/product-card.component';
 import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
 import { ShippingFormComponent } from './shipping-form/shipping-form.component';
 import { ShoppigCartSummaryComponent } from './shoppig-cart-summary/shoppig-cart-summary.component';
+import { OrderItemComponent } from './order-item/order-item.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { ShoppigCartSummaryComponent } from './shoppig-cart-summary/shoppig-cart
     ProductQuantityComponent,
     ShippingFormComponent,
     ShoppigCartSummaryComponent,
+    OrderItemComponent,
   ],
   imports: [
     BrowserModule,
