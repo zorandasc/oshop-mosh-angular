@@ -34,9 +34,7 @@ export class AuthService {
         console.log('You have been successfully logged in!');
         //this.router.navigateByUrl(returnUrl);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   }
 
   logout() {
@@ -46,9 +44,7 @@ export class AuthService {
         console.log('You have been successfully logged out!');
         this.router.navigateByUrl('/');
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   }
 
   //conver firebase user to our dataabse user

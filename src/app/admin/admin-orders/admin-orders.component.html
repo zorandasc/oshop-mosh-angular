@@ -1,20 +1,21 @@
 <h1 class="my-3">Manage All Orders</h1>
-<table class="table table-hover table-dark table-striped align-middle ">
+<table class="table table-hover table-dark table-striped align-middle">
   <thead>
     <tr>
+      <th>User</th>
       <th>Customer</th>
       <th>Date</th>
       <th></th>
     </tr>
-  </thead> 
+  </thead>
   <tbody>
     <tr *ngFor="let order of orders$ | async">
+      <td>{{ user.name }}</td>
       <td>{{ order.shipping.name }}</td>
-      <td>{{ order.datePlaced | date}}</td>
+      <td>{{ order.datePlaced | date }}</td>
       <td>
         <a href="#">View</a>
       </td>
     </tr>
-  </tbody> 
+  </tbody>
 </table>
-
