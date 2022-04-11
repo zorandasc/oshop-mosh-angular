@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class ShippingFormComponent implements OnInit, OnDestroy {
   @Input('cart') cart: ShoppingCart;
-  
+
   shipping = {
     name: '',
     addressLine1: '',
@@ -21,7 +21,7 @@ export class ShippingFormComponent implements OnInit, OnDestroy {
     city: '',
   };
 
-  userId: string;
+  user: any;
   userSubscri: Subscription;
 
   constructor(
@@ -32,12 +32,16 @@ export class ShippingFormComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.userSubscri = this.authService.user$.subscribe(
-      (user) => (this.userId = user.uid)
+      (user) => (this.user = user)
     );
   }
 
   async placeOrder() {
-    let order = new Order(this.userId, this.shipping, this.cart);
+    let user = {
+      userId: this.user.uid,
+      name: this.user.displayName,
+    };
+    let order = new Order(user, this.shipping, this.cart);
     let result = await this.orderService.placeOrder(order);
     this.router.navigate(['/order-success', result.key]);
   }

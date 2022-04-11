@@ -12,7 +12,7 @@
       <td>{{ order.shipping.name }}</td>
       <td>{{ order.datePlaced | date }}</td>
       <td>
-        <a href="#" class="text-warning">View</a>
+        <a [routerLink]="['/orders/', order.key]" class="text-warning">View</a>
       </td>
     </tr>
   </tbody>

@@ -8,6 +8,7 @@ import { CheckOutComponent } from './check-out/check-out.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { MyOrdersComponent } from './my-orders/my-orders.component';
+import { OrderItemComponent } from './order-item/order-item.component';
 import { OrderSuccessComponent } from './order-success/order-success.component';
 import { ProductsComponent } from './products/products.component';
 import { AdminAuthGuardService } from './services/admin-auth-guard.service';
@@ -22,6 +23,11 @@ const routes: Routes = [
   {
     path: 'check-out',
     component: CheckOutComponent,
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'orders/:id',
+    component: OrderItemComponent,
     canActivate: [AuthGuardService],
   },
   {

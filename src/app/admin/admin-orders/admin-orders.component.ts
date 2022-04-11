@@ -10,15 +10,10 @@ import { OrderService } from 'src/app/services/order.service';
 })
 export class AdminOrdersComponent implements OnInit {
   orders$: Observable<any>;
-  user: any;
 
-  constructor(
-    private orderService: OrderService,
-    private authService: AuthService
-  ) {}
+  constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
     this.orders$ = this.orderService.getOrders();
-    this.authService.appUser$.subscribe((user) => (this.user = user));
   }
 }
