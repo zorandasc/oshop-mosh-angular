@@ -23,7 +23,7 @@ export class UserDatabaseService {
     });
   }
 
-  get(uid: string):Observable<AppUser> {
+  get(uid: string): Observable<AppUser> {
     return this.db.object<AppUser>('/users/' + uid).valueChanges();
   }
 }

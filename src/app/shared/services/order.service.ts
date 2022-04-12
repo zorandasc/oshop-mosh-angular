@@ -5,15 +5,16 @@ import {
 } from '@angular/fire/compat/database';
 import { map } from 'rxjs';
 import { Order } from '../models/order';
+import { SharedModule } from '../shared.module';
 import { ShoppingCartService } from './shopping-cart.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: SharedModule,
 })
 export class OrderService {
   constructor(
     private db: AngularFireDatabase,
-    private shoppingCartService: ShoppingCartService
+    public shoppingCartService: ShoppingCartService
   ) {}
 
   async placeOrder(order: Order) {
@@ -54,8 +55,6 @@ export class OrderService {
   }
 
   get(orderId: string) {
-    return this.db
-      .object<Order>('/orders/' + orderId)
-      .valueChanges();
+    return this.db.object<Order>('/orders/' + orderId).valueChanges();
   }
 }
